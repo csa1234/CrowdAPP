@@ -25,7 +25,7 @@ contract CrowdFunding {
     uint256 public numberOfCampaigns = 0;
 
     constructor(){
-        treasury = 0xF5CcC36E13262995C12E9918f41f03a8e173cC18;
+        treasury = 0xF9826c32B837270e485C4Dc17041c643BcBC9BB8;
         
     }
 
