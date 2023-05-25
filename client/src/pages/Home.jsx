@@ -15,6 +15,14 @@ const Home = () => {
     setCampaigns(data);
     setIsLoading(false);
   }
+  /*const fetchCampaigns = async () => {
+    setIsLoading(true);
+    const data = await getCampaigns();
+    const filteredCampaigns = data.filter((campaign) => campaign.ban == false);
+    setCampaigns(filteredCampaigns);
+    setIsLoading(false);
+  }*/
+  
 
   useEffect(() => {
     if(contract) fetchCampaigns();

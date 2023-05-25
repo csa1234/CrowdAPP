@@ -7,7 +7,10 @@ import { EditionMetadataWithOwnerOutputSchema } from '@thirdweb-dev/sdk';
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-  const { contract } = useContract('0x3EFCE5052c24Da0889AdFa1f6F8D0482f85467a8');
+  //const { contract } = useContract('0x3EFCE5052c24Da0889AdFa1f6F8D0482f85467a8');
+
+  const { contract } = useContract('0x799Fc0004f3D0201b7a12dF71cbE58479f926890');
+  
   const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCampaign');
 
   const address = useAddress();
@@ -33,8 +36,9 @@ export const StateContextProvider = ({ children }) => {
   const getCampaigns = async () => {
     const campaigns = await contract.call('getCampaigns');
 
-    const parsedCampaings = campaigns.map((campaign, i) => ({
+    const parsedCampaigns = campaigns.map((campaign, i) => ({
       owner: campaign.owner,
+      ban: campaign.ban,
       title: campaign.title,
       description: campaign.description,
       target: ethers.utils.formatEther(campaign.target.toString()),
@@ -44,13 +48,19 @@ export const StateContextProvider = ({ children }) => {
       pId: i
     }));
 
-    return parsedCampaings;
+    const filteredCampaigns = parsedCampaigns.filter(campaign => !campaign.ban);
+    return filteredCampaigns;
+    
+        
+    //return parsedCampaings;
   }
 
   const getUserCampaigns = async () => {
     const allCampaigns = await getCampaigns();
 
-    const filteredCampaigns = allCampaigns.filter((campaign) => campaign.owner === address);
+    
+    const filteredCampaigns = allCampaigns.filter((campaign) => campaign.owner === address && campaign.ban === false);
+
 
     return filteredCampaigns;
   }
@@ -88,7 +98,8 @@ export const StateContextProvider = ({ children }) => {
         getCampaigns,
         getUserCampaigns,
         donate,
-        getDonations
+        getDonations,
+        //ban
       }}
     >
       {children}
